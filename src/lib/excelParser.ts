@@ -13,16 +13,23 @@ interface ParsedBook {
 
 const FIELD_MAPPINGS: Record<string, string[]> = {
   title: ["title", "book title", "name", "book name", "book_title"],
-  author: ["author", "writer", "by", "author name", "author_name"],
-  isbn: ["isbn", "isbn-13", "isbn-10", "isbn13", "isbn10"],
-  genre: ["genre", "category", "subject", "type", "classification"],
-  publisher: ["publisher", "publishing house", "press", "pub"],
-  year: ["year", "published", "publication year", "pub year", "date", "year published"],
+  author: ["author", "writer", "by", "author name", "author_name", "author (student / faculties)", "author/student"],
+  isbn: ["isbn", "isbn-13", "isbn-10", "isbn13", "isbn10", "accession number", "accession no"],
+  genre: ["genre", "category", "subject", "type", "classification", "document type", "programme/ discipline", "programme/discipline", "discipline"],
+  publisher: ["publisher", "publishing house", "press", "pub", "school", "mentor / guide", "mentor/guide"],
+  year: ["year", "published", "publication year", "pub year", "year published"],
 };
 
 function findColumn(headers: string[], fieldAliases: string[]): number {
+  const normalized = headers.map((h) => h.toLowerCase().trim());
   for (const alias of fieldAliases) {
-    const idx = headers.findIndex((h) => h.toLowerCase().trim() === alias);
+    // Exact match
+    const idx = normalized.findIndex((h) => h === alias);
+    if (idx !== -1) return idx;
+  }
+  // Partial/contains match as fallback
+  for (const alias of fieldAliases) {
+    const idx = normalized.findIndex((h) => h.includes(alias) || alias.includes(h));
     if (idx !== -1) return idx;
   }
   return -1;
