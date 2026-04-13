@@ -34,7 +34,11 @@ export async function fetchBooks(): Promise<Book[]> {
 }
 
 export async function insertBooks(books: Omit<Book, "id" | "created_at" | "updated_at">[]): Promise<void> {
-  const { error } = await supabase.from("books").insert(books);
+  const payload = books.map(b => ({
+    ...b,
+    additional_metadata: b.additional_metadata as unknown as Record<string, never>,
+  }));
+  const { error } = await supabase.from("books").insert(payload);
   if (error) throw error;
 }
 
