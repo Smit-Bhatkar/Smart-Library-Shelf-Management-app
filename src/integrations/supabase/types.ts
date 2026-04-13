@@ -14,7 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      books: {
+        Row: {
+          additional_metadata: Json | null
+          author: string | null
+          created_at: string
+          genre: string | null
+          id: string
+          isbn: string | null
+          publisher: string | null
+          title: string
+          updated_at: string
+          year: number | null
+        }
+        Insert: {
+          additional_metadata?: Json | null
+          author?: string | null
+          created_at?: string
+          genre?: string | null
+          id?: string
+          isbn?: string | null
+          publisher?: string | null
+          title: string
+          updated_at?: string
+          year?: number | null
+        }
+        Update: {
+          additional_metadata?: Json | null
+          author?: string | null
+          created_at?: string
+          genre?: string | null
+          id?: string
+          isbn?: string | null
+          publisher?: string | null
+          title?: string
+          updated_at?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
+      scan_results: {
+        Row: {
+          confidence_score: number | null
+          created_at: string
+          extracted_text: string | null
+          id: string
+          image_url: string | null
+          matched_book_id: string | null
+        }
+        Insert: {
+          confidence_score?: number | null
+          created_at?: string
+          extracted_text?: string | null
+          id?: string
+          image_url?: string | null
+          matched_book_id?: string | null
+        }
+        Update: {
+          confidence_score?: number | null
+          created_at?: string
+          extracted_text?: string | null
+          id?: string
+          image_url?: string | null
+          matched_book_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scan_results_matched_book_id_fkey"
+            columns: ["matched_book_id"]
+            isOneToOne: false
+            referencedRelation: "books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
