@@ -87,6 +87,7 @@ export function ImageCapture({ onImageCapture, isProcessing }: ImageCaptureProps
             accept="image/*"
             className="hidden"
             onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
+            
           />
         </div>
       )}
